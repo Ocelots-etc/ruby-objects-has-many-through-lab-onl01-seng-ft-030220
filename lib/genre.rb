@@ -1,23 +1,30 @@
 class Genre
+  attr_accessor :name, :songs, :artists, :artist, :patient
 
-@@all = []
-
-attr_accessor :name, :songs, :artists, :artist
+  @@all = []
 
   def initialize(name)
     @name = name
+    @songs = []
+    @artists = []
     @@all << self
+  end
+
+  def songs
+    @songs = Song.all.select {|song| song.genre == self}
   end
 
   def self.all
     @@all
   end
 
-  def songs
-    Song.all.select { |song| song.genre == self }
+  def artists
+    Song.all.each do |song|
+      if song.genre == self
+        @artists << song.artist
+      end
+    end
+    @artists
   end
 
-  def artists
-    genres.collect { | artists| artist.song  }
   end
-end
